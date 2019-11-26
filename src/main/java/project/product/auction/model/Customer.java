@@ -1,9 +1,16 @@
 package project.product.auction.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "customer")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class Customer {
 
     @Id
@@ -13,7 +20,7 @@ public class Customer {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "surename")
+    @Column(name = "surname")
     private String surenName;
 
     @Column(name = "personNumber")
