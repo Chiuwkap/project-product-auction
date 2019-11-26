@@ -21,7 +21,7 @@ public class Customer {
     private String name;
 
     @Column(name = "surname")
-    private String surenName;
+    private String surName;
 
     @Column(name = "person_number")
     private String personNumber;
