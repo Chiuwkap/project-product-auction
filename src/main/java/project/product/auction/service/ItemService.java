@@ -17,7 +17,7 @@ public class ItemService {
         return itemRepo.save(item);
     }
 
-    public Iterable<Item> getAllItem() {
+    public Iterable<Item> getAllItems() {
         return itemRepo.findAll();
     }
 }

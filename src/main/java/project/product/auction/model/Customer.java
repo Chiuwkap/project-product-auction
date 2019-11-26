@@ -23,13 +23,13 @@ public class Customer {
     @Column(name = "surname")
     private String surenName;
 
-    @Column(name = "personNumber")
+    @Column(name = "person_number")
     private String personNumber;
 
     @Column(name = "address")
     private String address;
 
-    @Column(name = "phoneNumber")
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @Column(name = "email")
