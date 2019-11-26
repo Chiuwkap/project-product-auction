@@ -21,7 +21,7 @@ public class Item {
     @Column(name = "item_name")
     private String itemName;
 
-    @Column(name = "desc")
+    @Column(name = "description")
     private String description;
 
     @Column(name = "exp_time")
