@@ -17,7 +17,7 @@ public class Customer {
     private String surenName;
 
     @Column(name = "personNumber")
-    private String personNumber
+    private String personNumber;
 
     @Column(name = "address")
     private String address;
@@ -27,5 +27,5 @@ public class Customer {
 
     @Column(name = "email")
     private String email;
-    
+
 }
