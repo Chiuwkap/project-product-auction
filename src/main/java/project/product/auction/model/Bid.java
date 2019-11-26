@@ -20,6 +20,9 @@ public class Bid {
     @Column(name = "item_id")
     private long itemId;
 
+    @Column(name = "customer_id")
+    private long custId;
+
     @Column(name = "current_bid")
     private int currentBid;
 
