@@ -1,5 +1,6 @@
 package project.product.auction.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,18 +17,23 @@ public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(notes = "The database generated step ID")
     private long id;
 
     @Column(name = "item_name")
+    @ApiModelProperty(notes = "Items name")
     private String itemName;
 
     @Column(name = "description")
+    @ApiModelProperty(notes = "Items description")
     private String description;
 
     @Column(name = "exp_time")
+    @ApiModelProperty(notes = "Expiration Time")
     private LocalDateTime expTime;
 
     @Column(name = "category")
+    @ApiModelProperty(notes = "Items category")
     private String category;
 
 }
