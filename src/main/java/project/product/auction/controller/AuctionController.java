@@ -21,7 +21,7 @@ public class AuctionController {
     private ItemService itemService;
 
     @ApiOperation(value = "Get all items", response = List.class)
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved step count"),
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved all items"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })

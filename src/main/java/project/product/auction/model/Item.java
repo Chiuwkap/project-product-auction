@@ -17,7 +17,7 @@ public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty(notes = "The database generated step ID")
+    @ApiModelProperty(notes = "The database generated ID")
     private long id;
 
     @Column(name = "item_name")
