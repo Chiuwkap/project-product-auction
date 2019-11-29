@@ -30,8 +30,8 @@ public class AuctionService {
         return itemRepo.findByExpTimeGreaterThanEqual(LocalDateTime.now());
     }
 
-    public Optional<Customer> getProfile(){
-        return customerRepository.findById();
+    public Optional<Customer> getProfile(Long id){
+        return customerRepository.findById(id);
     }
 
     //TODO: to get bid count per itemId: select count(itemId) from bid where itemId = (itemId).
