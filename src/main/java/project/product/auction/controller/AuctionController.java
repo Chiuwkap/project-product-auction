@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/auction")
+@RequestMapping("/")
 public class AuctionController {
 
     @Autowired

@@ -12,8 +12,9 @@
             </column>
             <column name="item_id" type="bigint"/>
             <column name="customer_id" type="bigint"/>
-            <column name="current_bid" type="int"/>
+            <column name="bid" type="int"/>
             <column name="bid_count" type="int"/>
+            <column name="bid_time" type="datetime"/>
         </createTable>
     </changeSet>
 

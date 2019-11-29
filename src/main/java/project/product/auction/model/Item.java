@@ -36,4 +36,7 @@ public class Item {
     @ApiModelProperty(notes = "Items category")
     private String category;
 
+    @Column(name = "image_url")
+    @ApiModelProperty(notes = "URL to image")
+    private String imageUrl;
 }

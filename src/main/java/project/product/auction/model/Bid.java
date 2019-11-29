@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "bid")
@@ -27,11 +28,15 @@ public class Bid {
     @ApiModelProperty(notes = "Customers Id")
     private long custId;
 
-    @Column(name = "current_bid")
-    @ApiModelProperty(notes = "Shows current price")
-    private int currentBid;
+    @Column(name = "bid")
+    @ApiModelProperty(notes = "Bids of the item")
+    private int bid;
 
     @Column(name = "bid_count")
-    @ApiModelProperty(notes = "Shows how many time item is bid")
+    @ApiModelProperty(notes = "Shows how many times item is bid")
     private int bidCount;
+
+    @Column(name = "bid_name")
+    @ApiModelProperty(notes = "Time of bid")
+    private LocalDateTime bidTime;
 }
