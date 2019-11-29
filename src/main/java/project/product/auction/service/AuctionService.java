@@ -34,7 +34,7 @@ public class AuctionService {
         return itemRepo.findByExpTimeGreaterThanEqualAndCategory(LocalDateTime.now(), cat);
     }
 
-    public Optional<Customer> getProfile(Long id){
+    public Optional<Customer> getProfile(long id){
         return customerRepository.findById(id);
     }
 

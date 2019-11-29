@@ -39,8 +39,8 @@ public class AuctionController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
     @GetMapping("/profile/{userId}")
-    public Optional<Customer> showProfile(@PathVariable Long id){
-        return itemService.getProfile(id);
+    public Optional<Customer> showProfile(@PathVariable long userId){
+        return itemService.getProfile(userId);
     }
 
     @ApiOperation(value = "Get all current items", response = List.class)

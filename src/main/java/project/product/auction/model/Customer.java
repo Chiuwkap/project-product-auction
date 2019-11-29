@@ -25,7 +25,7 @@ public class Customer {
 
     @Column(name = "surname")
     @ApiModelProperty(notes = "Customers surname")
-    private String surName;
+    private String surname;
 
     @Column(name = "person_number")
     @ApiModelProperty(notes = "Customers personnumber")
