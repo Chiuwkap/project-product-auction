@@ -4,10 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import project.product.auction.model.Customer;
 import project.product.auction.model.Item;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-   Optional<Customer> findById();
+    Iterable<Item> findByExpTimeGreaterThanEqual(LocalDateTime now);
 
 }
