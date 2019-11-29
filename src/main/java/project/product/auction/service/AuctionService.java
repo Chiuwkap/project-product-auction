@@ -30,6 +30,10 @@ public class AuctionService {
         return itemRepo.findByExpTimeGreaterThanEqual(LocalDateTime.now());
     }
 
+    public Iterable<Item> getCurrentItemsByCategory(String cat) {
+        return itemRepo.findByExpTimeGreaterThanEqualAndCategory(LocalDateTime.now(), cat);
+    }
+
     public Optional<Customer> getProfile(){
         return customerRepository.findById();
     }

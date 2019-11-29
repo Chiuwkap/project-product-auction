@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-    Iterable<Item> findByExpTimeGreaterThanEqual(LocalDateTime now);
+    Iterable<Item> findByExpTimeGreaterThanEqual(LocalDateTime expTime);
+    Iterable<Item> findByExpTimeGreaterThanEqualAndCategory(LocalDateTime expTime, String category);
 
 }
