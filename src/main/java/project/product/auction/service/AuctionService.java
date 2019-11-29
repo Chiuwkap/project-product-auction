@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import project.product.auction.model.Item;
 import project.product.auction.repository.ItemRepository;
 
+import java.time.LocalDateTime;
+
 @Service
 public class AuctionService {
 
@@ -17,6 +19,10 @@ public class AuctionService {
 
     public Iterable<Item> getAllItems() {
         return itemRepo.findAll();
+    }
+
+    public Iterable<Item> getAllCurrentItems() {
+        return itemRepo.findByExpTimeGreaterThanEqual(LocalDateTime.now());
     }
 
     //TODO: to get bid count per itemId: select count(itemId) from bid where itemId = (itemId).
