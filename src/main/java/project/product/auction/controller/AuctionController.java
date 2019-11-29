@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import project.product.auction.model.Item;
-import project.product.auction.service.ItemService;
+import project.product.auction.service.AuctionService;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
 public class AuctionController {
 
     @Autowired
-    private ItemService itemService;
+    private AuctionService itemService;
 
     @ApiOperation(value = "Get all items", response = List.class)
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved all items"),
