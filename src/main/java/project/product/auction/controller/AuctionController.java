@@ -58,8 +58,8 @@ public class AuctionController {
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
-    @GetMapping("/currentauctions")
+    @GetMapping("/currentauctions/category/{cat}")
     public Iterable<Item> getCurrentAuctionsByCategory(@PathVariable String cat) {
-        return null;
+        return itemService.getCurrentItemsByCategory(cat);
     }
 }
