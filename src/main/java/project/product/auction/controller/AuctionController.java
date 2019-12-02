@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import project.product.auction.model.Bid;
 import project.product.auction.model.Customer;
 import project.product.auction.model.Item;
 import project.product.auction.service.AuctionService;
@@ -61,5 +62,10 @@ public class AuctionController {
     @GetMapping("/currentauctions/category/{cat}")
     public Iterable<Item> getCurrentAuctionsByCategory(@PathVariable String cat) {
         return itemService.getCurrentItemsByCategory(cat);
+    }
+
+    @GetMapping("/auctions/{itemId}")
+    public Optional<Bid> getAuction(@PathVariable long itemId) {
+        return itemService.getAuction(itemId);
     }
 }
