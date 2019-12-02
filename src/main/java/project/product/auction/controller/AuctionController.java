@@ -4,10 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import project.product.auction.model.Bid;
 import project.product.auction.model.Customer;
 import project.product.auction.model.Item;
@@ -68,4 +65,8 @@ public class AuctionController {
     public Optional<Bid> getAuction(@PathVariable long itemId) {
         return itemService.getAuction(itemId);
     }
+
+    // Delete item with itemId
+    @DeleteMapping("/items/{itemId}")
+    public void removeItemFromAuction(@PathVariable long itemId) { itemService.removeItem(itemId); }
 }

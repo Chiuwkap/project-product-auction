@@ -33,11 +33,11 @@ public class AuctionService {
         return itemRepo.findAll();
     }
     public Iterable<Item> getAllCurrentItems() {
-        return itemRepo.findByExpTimeGreaterThanEqual(LocalDateTime.now());
+        return itemRepo.findByExpTimeLessThanEqual(LocalDateTime.now());
     }
 
     public Iterable<Item> getCurrentItemsByCategory(String cat) {
-        return itemRepo.findByExpTimeGreaterThanEqualAndCategory(LocalDateTime.now(), cat);
+        return itemRepo.findByExpTimeLessThanEqualAndCategory(LocalDateTime.now(), cat);
     }
 
     public Optional<Customer> getProfile(long id){
@@ -48,6 +48,7 @@ public class AuctionService {
         return bidRepo.findFirstByItemIdOrderByBidTimeDesc(itemId);
     }
 
+    public void removeItem(long itemId) { itemRepo.deleteById(itemId);}
     //TODO: To save bid:
     // 1. get bid count per itemId: select count(itemId) from bid where itemId = (itemId).
     // Use count + 1 in save (persist) of entityobject (Bid)

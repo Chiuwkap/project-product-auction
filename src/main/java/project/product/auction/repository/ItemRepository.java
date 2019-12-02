@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-    Iterable<Item> findByExpTimeGreaterThanEqual(LocalDateTime expTime);
-    Iterable<Item> findByExpTimeGreaterThanEqualAndCategory(LocalDateTime expTime, String category);
+    Iterable<Item> findByExpTimeLessThanEqual(LocalDateTime expTime);
+    Iterable<Item> findByExpTimeLessThanEqualAndCategory(LocalDateTime expTime, String category);
 
 }
