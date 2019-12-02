@@ -48,6 +48,8 @@ public class AuctionService {
         return bidRepo.getByItemIdAndFirstByOrderByBidTimeDesc(itemId);
     }
 
-    //TODO: to get bid count per itemId: select count(itemId) from bid where itemId = (itemId).
+    //TODO: To save bid:
+    // 1. get bid count per itemId: select count(itemId) from bid where itemId = (itemId).
     // Use count + 1 in save (persist) of entityobject (Bid)
+    // 2. Check that CurrentBid is above last value
 }
