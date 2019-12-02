@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,10 +30,9 @@ public class Bid {
     @ApiModelProperty(notes = "Customers Id")
     private long customerId;
 
-    @Digits(integer=10, fraction=2)
     @Column(name = "bid")
     @ApiModelProperty(notes = "Bids of the item")
-    private int bid;
+    private BigDecimal bid;
 
     @Column(name = "bid_count")
     @ApiModelProperty(notes = "Shows how many times item is bid")
@@ -41,4 +41,12 @@ public class Bid {
     @Column(name = "bid_time")
     @ApiModelProperty(notes = "Time of bid")
     private LocalDateTime bidTime;
+
+    public Bid(long itemId, long customerID, BigDecimal bid, int bidCount, LocalDateTime bidTime) {
+        this.itemId = itemId;
+        this.customerId = customerID;
+        this.bid = bid;
+        this.bidCount = bidCount;
+        this.bidTime = bidTime;
+    }
 }

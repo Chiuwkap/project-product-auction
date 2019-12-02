@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import project.product.auction.dto.BidDto;
 import project.product.auction.model.Bid;
 import project.product.auction.model.Customer;
 import project.product.auction.model.Item;
@@ -21,6 +22,7 @@ public class AuctionController {
     @Autowired
     private AuctionService itemService;
 
+    // Get all the items from the database. Not really necessary
     @ApiOperation(value = "Get all items", response = List.class)
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved all items"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -31,6 +33,7 @@ public class AuctionController {
         return itemService.getAllItems();
     }
 
+    // Get a single customer by user id
     @ApiOperation(value = "Get user by id", response = List.class)
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved user"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -41,6 +44,7 @@ public class AuctionController {
         return itemService.getProfile(userId);
     }
 
+    // Get all items which haven't expired yet
     @ApiOperation(value = "Get all current items", response = List.class)
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved all items"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -51,6 +55,7 @@ public class AuctionController {
         return itemService.getAllCurrentItems();
     }
 
+    // Same as above but by category
     @ApiOperation(value = "Get all current items by category", response = List.class)
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved all items"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -61,6 +66,12 @@ public class AuctionController {
         return itemService.getCurrentItemsByCategory(cat);
     }
 
+    // Get the latest latest (by bid time) bid for a specific item (by item id)
+    @ApiOperation(value = "Get the latest bid row for an item id", response = List.class)
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved bid"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
     @GetMapping("/auctions/{itemId}")
     public Optional<Bid> getAuction(@PathVariable long itemId) {
         return itemService.getAuction(itemId);
@@ -69,4 +80,11 @@ public class AuctionController {
     // Delete item with itemId
     @DeleteMapping("/items/{itemId}")
     public void removeItemFromAuction(@PathVariable long itemId) { itemService.removeItem(itemId); }
+
+    // Register bid
+    @PostMapping("/bid/register")
+    public String registerBid(@RequestBody BidDto bidDto) {
+        return itemService.registerBid(bidDto);
+    }
+
 }
