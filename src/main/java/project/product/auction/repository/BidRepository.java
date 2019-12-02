@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface BidRepository extends JpaRepository<Bid, Long> {
     Optional<Bid> findFirstByItemIdOrderByBidTimeDesc(long itemId);
+    Optional<Bid> findFirstByItemIdOrderByBidCountDesc(long itemId);
 }
