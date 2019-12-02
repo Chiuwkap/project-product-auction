@@ -12,7 +12,7 @@
             </column>
             <column name="item_id" type="bigint"/>
             <column name="customer_id" type="bigint"/>
-            <column name="bid" type="int"/>
+            <column name="bid" type="decimal(10,2)"/>
             <column name="bid_count" type="int"/>
             <column name="bid_time" type="datetime"/>
         </createTable>

@@ -35,6 +35,10 @@ public class Customer {
     @ApiModelProperty(notes = "Customers address")
     private String address;
 
+    @Column(name = "zip_code")
+    @ApiModelProperty(notes = "Customers zip code")
+    private String zipCode;
+
     @Column(name = "phone_number")
     @ApiModelProperty(notes = "Customers phonenumber")
     private String phoneNumber;

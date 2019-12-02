@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,6 +29,11 @@ public class Item {
     @Column(name = "description")
     @ApiModelProperty(notes = "Items description")
     private String description;
+
+    @Digits(integer=10, fraction=2)
+    @Column(name = "start_price")
+    @ApiModelProperty(notes = "Starting price")
+    private BigDecimal startPrice;
 
     @Column(name = "exp_time")
     @ApiModelProperty(notes = "Expiration Time")
