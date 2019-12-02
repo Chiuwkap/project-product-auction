@@ -45,7 +45,7 @@ public class AuctionService {
     }
 
     public Optional<Bid> getAuction(long itemId) {
-        return bidRepo.getByItemIdAndFirstByOrderByBidTimeDesc(itemId);
+        return bidRepo.findFirstByItemIdOrderByBidTimeDesc(itemId);
     }
 
     //TODO: To save bid:

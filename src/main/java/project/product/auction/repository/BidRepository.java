@@ -6,5 +6,5 @@ import project.product.auction.model.Bid;
 import java.util.Optional;
 
 public interface BidRepository extends JpaRepository<Bid, Long> {
-    Optional<Bid> getByItemIdAndFirstByOrderByBidTimeDesc(long itemId);
+    Optional<Bid> findFirstByItemIdOrderByBidTimeDesc(long itemId);
 }
