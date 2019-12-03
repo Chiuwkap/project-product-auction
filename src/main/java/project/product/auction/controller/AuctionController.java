@@ -85,7 +85,7 @@ public class AuctionController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
     @GetMapping("/expiredauctions/category/{category}")
     public Iterable<Item> getExpiredAuctionsItemsByCategory(@PathVariable String category) {
-        return itemService.getCurrentItemsNotExpiredTimeByCategory(category);
+        return itemService.getCurrentItemsExpiredTimeByCategory(category);
     }
 
     // Get the latest latest (by bid time) bid for a specific item (by item id)
