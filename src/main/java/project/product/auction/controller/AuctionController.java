@@ -45,25 +45,47 @@ public class AuctionController {
     }
 
     // Get all items which haven't expired yet
-    @ApiOperation(value = "Get all current items", response = List.class)
+    @ApiOperation(value = "Get all current items which haven't expired yet", response = List.class)
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved all items"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
     @GetMapping("/currentauctions")
-    public Iterable<Item> getCurrentAuctions() {
-        return itemService.getAllCurrentItems();
+    public Iterable<Item> getCurrentAuctionsItems() {
+        return itemService.getAllCurrentItemsNotExpiredTime();
     }
 
-    // Same as above but by category
-    @ApiOperation(value = "Get all current items by category", response = List.class)
+    // Get all items which haven't expired yet
+    @ApiOperation(value = "Get all current items which haven't expired yet by category", response = List.class)
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved all items"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
-    @GetMapping("/currentauctions/category/{cat}")
-    public Iterable<Item> getCurrentAuctionsByCategory(@PathVariable String cat) {
-        return itemService.getCurrentItemsByCategory(cat);
+    @GetMapping("/currentauctions/category/{category}")
+    public Iterable<Item> getCurrentAuctionsItemsByCategory(@PathVariable String category) {
+        return itemService.getCurrentItemsNotExpiredTimeByCategory(category);
+    }
+
+    // Get all items which has expired
+    @ApiOperation(value = "Get all current items which have expired", response = List.class)
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved all items"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
+    @GetMapping("/expiredauctions")
+    public Iterable<Item> getExpiredAuctionsItems() {
+        return itemService.getAllCurrentItemsExpiredTime();
+    }
+
+    // Get all items which has expired by category
+    @ApiOperation(value = "Get all current items which has expired by category", response = List.class)
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved all expired items"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
+    @GetMapping("/expiredauctions/category/{category}")
+    public Iterable<Item> getExpiredAuctionsItemsByCategory(@PathVariable String category) {
+        return itemService.getCurrentItemsNotExpiredTimeByCategory(category);
     }
 
     // Get the latest latest (by bid time) bid for a specific item (by item id)
@@ -78,10 +100,15 @@ public class AuctionController {
     }
 
     // Delete item with itemId
+    @ApiOperation(value = "Delete an item with ItemId", response = List.class)
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Deletion was successful"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
     @DeleteMapping("/items/{itemId}")
     public void removeItemFromAuction(@PathVariable long itemId) { itemService.removeItem(itemId); }
 
     // Register bid
+    @ApiOperation(value = "Register a bid in a auction", response = List.class)
+    @ApiResponses(value = { @ApiResponse(code = 202, message = "Bid accepted") })
     @PostMapping("/bid/register")
     public String registerBid(@RequestBody BidDto bidDto) {
         return itemService.registerBid(bidDto);

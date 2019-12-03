@@ -2,7 +2,6 @@ package project.product.auction.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import project.product.auction.dto.AuctionDto;
 import project.product.auction.dto.BidDto;
 import project.product.auction.model.Bid;
 import project.product.auction.model.Customer;
@@ -35,12 +34,24 @@ public class AuctionService {
         return itemRepo.findAll();
     }
 
-    public Iterable<Item> getAllCurrentItems() {
+    // Get all expired items
+    public Iterable<Item> getAllCurrentItemsExpiredTime() {
         return itemRepo.findByExpTimeLessThanEqual(LocalDateTime.now());
     }
 
-    public Iterable<Item> getCurrentItemsByCategory(String cat) {
-        return itemRepo.findByExpTimeLessThanEqualAndCategory(LocalDateTime.now(), cat);
+    // Get all expired items by category
+    public Iterable<Item> getCurrentItemsExpiredTimeByCategory(String category) {
+        return itemRepo.findByExpTimeLessThanEqualAndCategory(LocalDateTime.now(), category);
+    }
+
+    // Get all not expired items
+    public Iterable<Item> getAllCurrentItemsNotExpiredTime() {
+        return itemRepo.findByExpTimeGreaterThanEqual(LocalDateTime.now());
+    }
+
+    // Get all not expired items by category
+    public Iterable<Item> getCurrentItemsNotExpiredTimeByCategory(String category) {
+        return itemRepo.findByExpTimeGreaterThanEqualAndCategory(LocalDateTime.now(), category);
     }
 
     public Optional<Customer> getProfile(long id){
@@ -69,8 +80,6 @@ public class AuctionService {
         }
     }
 
-    //TODO: To save bid:
-    // 1. get bid count per itemId: select count(itemId) from bid where itemId = (itemId).
-    // Use count + 1 in save (persist) of entityobject (Bid)
-    // 2. Check that CurrentBid is above last value
+    //TODO: ItemId in Item @ManyToOne Bid - Low prio?
+
 }
