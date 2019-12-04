@@ -19,6 +19,10 @@ public class Customer {
     @ApiModelProperty(notes = "The database generated ID")
     private long id;
 
+    @Column(name = "alias")
+    @ApiModelProperty(notes = "Customers alias")
+    private String alias;
+
     @Column(name = "name")
     @ApiModelProperty(notes = "Customers name")
     private String name;
