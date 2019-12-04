@@ -84,5 +84,4 @@ public class AuctionService {
     }
 
     //TODO: ItemId in Item @ManyToOne Bid - Low prio?
-
 }

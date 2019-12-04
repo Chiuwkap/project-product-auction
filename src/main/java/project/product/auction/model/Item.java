@@ -46,4 +46,8 @@ public class Item {
     @Column(name = "image_url")
     @ApiModelProperty(notes = "URL to image")
     private String imageUrl;
+
+    @Column(name = "customer_id")
+    @ApiModelProperty(notes = "Sellers  Id")
+    private long customerId;
 }

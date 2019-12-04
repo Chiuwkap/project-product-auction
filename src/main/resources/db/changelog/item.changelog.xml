@@ -11,6 +11,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="item_name" type="varchar(255)"/>
+            <column name="customer_id" type="bigint"/>
             <column name="description" type="varchar(255)"/>
             <column name="start_price" type="decimal(10,2)"/>
             <column name="exp_time" type="datetime"/>
