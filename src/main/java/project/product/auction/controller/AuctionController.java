@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.product.auction.dto.BidDto;
 import project.product.auction.model.Bid;
@@ -101,16 +102,17 @@ public class AuctionController {
 
     // Delete item with itemId
     @ApiOperation(value = "Delete an item with ItemId", response = List.class)
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "Deletion was successful"),
+    @ApiResponses(value = { @ApiResponse(code = 204, message = "Deletion was successful"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
     @DeleteMapping("/items/{itemId}")
     public void removeItemFromAuction(@PathVariable long itemId) { itemService.removeItem(itemId); }
 
     // Register bid
     @ApiOperation(value = "Register a bid in a auction", response = List.class)
-    @ApiResponses(value = { @ApiResponse(code = 202, message = "Bid accepted") })
+    @ApiResponses(value = { @ApiResponse(code = 202, message = "Bid accepted"),
+                            @ApiResponse(code = 406, message = "Bid not accepted") })
     @PostMapping("/bid/register")
-    public String registerBid(@RequestBody BidDto bidDto) {
+    public ResponseEntity registerBid(@RequestBody BidDto bidDto) {
         return itemService.registerBid(bidDto);
     }
 

@@ -1,6 +1,8 @@
 package project.product.auction.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import project.product.auction.dto.BidDto;
 import project.product.auction.model.Bid;
@@ -64,7 +66,7 @@ public class AuctionService {
 
     public void removeItem(long itemId) { itemRepo.deleteById(itemId);}
 
-    public String registerBid(BidDto bidDto) {
+    public ResponseEntity registerBid(BidDto bidDto) {
         // DidDTO   = itemId, customerId, bid
         // Bid      = itemId, customerId, bid, bidCount, BidTime
         // Get bid count:
@@ -74,10 +76,11 @@ public class AuctionService {
 
         if (bidDto.getBid().compareTo(lastBid.get().getBid()) == 1) {
             bidRepo.save(new Bid(bidDto.getItemId(), bidDto.getCustomerID(), bidDto.getBid(), lastBidCount, LocalDateTime.now()));
-            return "Entity persisted";
+            return new ResponseEntity(HttpStatus.ACCEPTED);
         } else {
-            return "Bid must be higher than present bid";
+            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
         }
+
     }
 
     //TODO: ItemId in Item @ManyToOne Bid - Low prio?
