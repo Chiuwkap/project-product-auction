@@ -64,7 +64,14 @@ public class AuctionService {
         return bidRepo.findFirstByItemIdOrderByBidTimeDesc(itemId);
     }
 
-    public void removeItem(long itemId) { itemRepo.deleteById(itemId);}
+    public ResponseEntity removeItem(long itemId) {
+        if (itemRepo.findById(itemId).isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } else {
+            itemRepo.deleteById(itemId);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+    }
 
     public ResponseEntity registerBid(BidDto bidDto) {
         // DidDTO   = itemId, customerId, bid
