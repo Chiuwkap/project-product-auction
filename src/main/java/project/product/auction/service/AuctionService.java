@@ -13,7 +13,7 @@ import project.product.auction.repository.CustomerRepository;
 import project.product.auction.repository.ItemRepository;
 
 import java.math.BigDecimal;
-import java.util.Optional;
+import java.util.*;
 import java.time.LocalDateTime;
 
 @Service
@@ -27,6 +27,8 @@ public class AuctionService {
 
     @Autowired
     CustomerRepository customerRepository;
+
+//    String[] categories = {"möbler", "elektronik"};
 
     public Item registerItem(Item item) {
         return itemRepo.save(item);
@@ -43,7 +45,11 @@ public class AuctionService {
 
     // Get all expired items by category
     public Iterable<Item> getCurrentItemsExpiredTimeByCategory(String category) {
-        return itemRepo.findByExpTimeLessThanEqualAndCategory(LocalDateTime.now(), category);
+//        if (Arrays.asList(categories).contains(category)) {
+            return itemRepo.findByExpTimeLessThanEqualAndCategory(LocalDateTime.now(), category);
+//        } else {
+//            return null;
+//        }
     }
 
     // Get all not expired items
@@ -74,12 +80,8 @@ public class AuctionService {
     }
 
     public ResponseEntity registerBid(BidDto bidDto) {
-        // DidDTO   = itemId, customerId, bid
-        // Bid      = itemId, customerId, bid, bidCount, BidTime
-        // Get bid count:
         Optional<Bid> lastBid = bidRepo.findFirstByItemIdOrderByBidCountDesc(bidDto.getItemId());
         int lastBidCount = lastBid.get().getBidCount() + 1;
-        BigDecimal lastBidPrice = lastBid.get().getBid();
 
         if (bidDto.getBid().compareTo(lastBid.get().getBid()) == 1) {
             bidRepo.save(new Bid(bidDto.getItemId(), bidDto.getCustomerID(), bidDto.getBid(), lastBidCount, LocalDateTime.now()));

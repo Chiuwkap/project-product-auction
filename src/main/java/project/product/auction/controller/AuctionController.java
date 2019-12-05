@@ -56,7 +56,7 @@ public class AuctionController {
         return itemService.getAllCurrentItemsNotExpiredTime();
     }
 
-    // Get all items which haven't expired yet
+    // Get all items which haven't expired yet by category
     @ApiOperation(value = "Get all current items which haven't expired yet by category", response = List.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully retrieved all items"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
