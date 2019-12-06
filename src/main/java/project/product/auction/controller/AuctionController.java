@@ -3,6 +3,8 @@ package project.product.auction.controller;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +18,11 @@ import project.product.auction.service.AuctionService;
 import java.util.List;
 import java.util.Optional;
 
-
 @RestController
 @RequestMapping("/v1")
 public class AuctionController {
+
+    private static final Logger LOG = LogManager.getLogger(AuctionController.class);
 
     @Autowired
     private AuctionService itemService;
@@ -103,8 +106,8 @@ public class AuctionController {
 
     // Delete item with itemId
     @ApiOperation(value = "Delete an item with ItemId", response = List.class)
-    @ApiResponses(value = { @ApiResponse(code = 202, message = "Deletion was successful"),
-                            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
+    @ApiResponses(value = {@ApiResponse(code = 202, message = "Deletion was successful"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @DeleteMapping("/items/{itemId}")
     public ResponseEntity removeItemFromAuction(@PathVariable long itemId) {
         Item deletedItem = itemService.removeItem(itemId);
@@ -118,8 +121,8 @@ public class AuctionController {
 
     // Register bid
     @ApiOperation(value = "Register a bid in a auction", response = List.class)
-    @ApiResponses(value = { @ApiResponse(code = 202, message = "Bid accepted"),
-                            @ApiResponse(code = 406, message = "Bid not accepted")})
+    @ApiResponses(value = {@ApiResponse(code = 202, message = "Bid accepted"),
+            @ApiResponse(code = 406, message = "Bid not accepted")})
     @PostMapping("/bid/register")
     public ResponseEntity registerBid(@RequestBody BidDto bidDto) {
         Bid newBid = itemService.registerBid(bidDto);

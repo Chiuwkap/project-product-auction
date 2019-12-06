@@ -1,9 +1,12 @@
 package project.product.auction.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import project.product.auction.controller.AuctionController;
 import project.product.auction.dto.BidDto;
 import project.product.auction.model.Bid;
 import project.product.auction.model.Customer;
