@@ -6,6 +6,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
+import project.product.auction.dto.BidDto;
+import project.product.auction.model.Bid;
 import project.product.auction.model.Item;
 import project.product.auction.repository.BidRepository;
 import project.product.auction.repository.CustomerRepository;
@@ -15,6 +17,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 
@@ -35,6 +38,8 @@ public class AuctionServiceTest {
     private Item item1;
     private Item item2;
     private Item item3;
+    Optional<Bid> bid1;
+    private BidDto bidDto1;
 
     @Before
     public void setUp() {
@@ -44,13 +49,14 @@ public class AuctionServiceTest {
         Item[] items = {item1, item2, item3};
         listOfItems = Arrays.asList(items);
 
+        bid1 = Optional.of(new Bid(1, 1,BigDecimal.valueOf(500.00), 1, LocalDateTime.parse("2019-12-03T10:00:00")));
+        bidDto1 = new BidDto(1, 2,BigDecimal.valueOf(600.00));
     }
 
     @Test
-    public void getAllCurrentItemsExpiredTime_test() {
-        when(itemRepository.findByExpTimeLessThanEqual(LocalDateTime.now()))
-                .thenReturn(listOfItems);
+    public void registerBid_test() {
+        when(bidRepository.findFirstByItemIdOrderByBidCountDesc(bidDto1.getItemId())).thenReturn(bid1);
 
-        // To be continued...
+
     }
 }

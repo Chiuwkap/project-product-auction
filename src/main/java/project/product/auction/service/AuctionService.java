@@ -70,24 +70,25 @@ public class AuctionService {
         return bidRepo.findFirstByItemIdOrderByBidTimeDesc(itemId);
     }
 
-    public ResponseEntity removeItem(long itemId) {
+    public Item removeItem(long itemId) {
         if (itemRepo.findById(itemId).isEmpty()) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return null;
         } else {
             itemRepo.deleteById(itemId);
-            return new ResponseEntity(HttpStatus.OK);
+            return itemRepo.findById(itemId).get();
         }
     }
 
-    public ResponseEntity registerBid(BidDto bidDto) {
+    public Bid registerBid(BidDto bidDto) {
         Optional<Bid> lastBid = bidRepo.findFirstByItemIdOrderByBidCountDesc(bidDto.getItemId());
         int lastBidCount = lastBid.get().getBidCount() + 1;
 
         if (bidDto.getBid().compareTo(lastBid.get().getBid()) == 1) {
-            bidRepo.save(new Bid(bidDto.getItemId(), bidDto.getCustomerID(), bidDto.getBid(), lastBidCount, LocalDateTime.now()));
-            return new ResponseEntity(HttpStatus.ACCEPTED);
+            Bid newBid = new Bid(bidDto.getItemId(), bidDto.getCustomerID(), bidDto.getBid(), lastBidCount, LocalDateTime.now());
+            bidRepo.save(newBid);
+            return newBid;
         } else {
-            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+            return null;
         }
 
     }

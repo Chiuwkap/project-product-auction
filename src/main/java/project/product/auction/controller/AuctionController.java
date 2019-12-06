@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.product.auction.dto.BidDto;
@@ -106,7 +107,13 @@ public class AuctionController {
                             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @DeleteMapping("/items/{itemId}")
     public ResponseEntity removeItemFromAuction(@PathVariable long itemId) {
-        return itemService.removeItem(itemId);
+        Item deletedItem = itemService.removeItem(itemId);
+        if (deletedItem != null) {
+            return new ResponseEntity(HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     // Register bid
@@ -115,7 +122,12 @@ public class AuctionController {
                             @ApiResponse(code = 406, message = "Bid not accepted")})
     @PostMapping("/bid/register")
     public ResponseEntity registerBid(@RequestBody BidDto bidDto) {
-        return itemService.registerBid(bidDto);
+        Bid newBid = itemService.registerBid(bidDto);
+        if (newBid != null) {
+            return new ResponseEntity(HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
 }

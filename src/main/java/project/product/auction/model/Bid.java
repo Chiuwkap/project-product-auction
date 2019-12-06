@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
