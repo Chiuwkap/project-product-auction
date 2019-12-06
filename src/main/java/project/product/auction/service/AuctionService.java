@@ -37,6 +37,10 @@ public class AuctionService {
         return itemRepo.save(item);
     }
 
+    public void registerCustomer(Customer customer) {
+        customerRepository.save(customer);
+    }
+
     public Iterable<Item> getAllItems() {
         return itemRepo.findAll();
     }

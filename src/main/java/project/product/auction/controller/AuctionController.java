@@ -173,10 +173,18 @@ public class AuctionController {
         }
     }
 
-    @PostMapping("/itemregistry")
-    public ResponseEntity registerAnItem(@RequestBody Item itemId) {
-       Item addItem = auctionsService.registerItem(itemId);
+    // Register item
+    @PostMapping("/item/register")
+    public ResponseEntity registerItem(@RequestBody Item item) {
+       auctionsService.registerItem(item);
        return new ResponseEntity("Item added", HttpStatus.OK);
+    }
+
+    // Register customer
+    @PostMapping("/customer/register")
+    public ResponseEntity registerCustomer(@RequestBody Customer customer) {
+        auctionsService.registerCustomer(customer);
+        return new ResponseEntity("Customer added", HttpStatus.OK);
     }
 
 }
