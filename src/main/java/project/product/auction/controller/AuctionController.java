@@ -15,6 +15,7 @@ import project.product.auction.model.Customer;
 import project.product.auction.model.Item;
 import project.product.auction.service.AuctionService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -162,7 +163,7 @@ public class AuctionController {
             @ApiResponse(code = 406, message = "Bid not accepted")})
     @PostMapping("/bid/register")
     public ResponseEntity registerBid(@RequestBody BidDto bidDto) {
-        Bid newBid = itemService.registerBid(bidDto);
+        Bid newBid = itemService.registerBid(bidDto, LocalDateTime.now());
         if (newBid != null) {
             return new ResponseEntity("Bid accepted", HttpStatus.ACCEPTED);
         } else {

@@ -83,7 +83,7 @@ public class AuctionService {
         }
     }
 
-    public Bid registerBid(BidDto bidDto) {
+    public Bid registerBid(BidDto bidDto, LocalDateTime bidTime) {
         Optional<Bid> lastBid = bidRepo.findFirstByItemIdOrderByBidCountDesc(bidDto.getItemId());
         if (lastBid.isEmpty()) {
             return null;
@@ -91,7 +91,7 @@ public class AuctionService {
         int lastBidCount = lastBid.get().getBidCount() + 1;
 
         if (bidDto.getBid().compareTo(lastBid.get().getBid()) == 1) {
-            Bid newBid = new Bid(bidDto.getItemId(), bidDto.getCustomerID(), bidDto.getBid(), lastBidCount, LocalDateTime.now());
+            Bid newBid = new Bid(bidDto.getItemId(), bidDto.getCustomerID(), bidDto.getBid(), lastBidCount, bidTime);
             bidRepo.save(newBid);
             return newBid;
         } else {
