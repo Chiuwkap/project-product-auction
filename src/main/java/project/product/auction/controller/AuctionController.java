@@ -111,19 +111,16 @@ public class AuctionController {
 
     // Delete item with itemId
     @ApiOperation(value = "Delete an item with ItemId", response = List.class)
-<<<<<<< HEAD
     @ApiResponses(value = {@ApiResponse(code = 202, message = "Deletion was successful"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
-=======
-    @ApiResponses(value = { @ApiResponse(code = 202, message = "Deletion was successful"),
-                            @ApiResponse(code = 404, message = "No such item")})
->>>>>>> 783b4bfabe8763d1eae4ade8f2b24fd98a6ddbd2
+            @ApiResponse(code = 404, message = "No such item")})
     @DeleteMapping("/items/{itemId}")
     public ResponseEntity removeItemFromAuction(@PathVariable long itemId) {
         Item deletedItem = itemService.removeItem(itemId);
         if (deletedItem != null) {
+            LOG.info("LOG INFO: Item successfully deleted");
             return new ResponseEntity("Deletion successful", HttpStatus.ACCEPTED);
         } else {
+            LOG.info("LOG INFO: No item to remove");
             return new ResponseEntity("No such item", HttpStatus.NOT_FOUND);
         }
 
