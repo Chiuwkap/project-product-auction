@@ -15,6 +15,8 @@ import project.product.auction.service.AuctionService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 
 @RestController
@@ -42,8 +44,13 @@ public class AuctionController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/profile/{userId}")
-    public Optional<Customer> showProfile(@PathVariable long userId) {
-        return itemService.getProfile(userId);
+    public ResponseEntity showProfile(@PathVariable long userId) {
+        Optional<Customer> customer = itemService.getProfile(userId);
+        if (customer.isEmpty()) {
+            return new ResponseEntity("Customer not found", HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(customer.get(), HttpStatus.OK);
+        }
     }
 
     // Get all items which haven't expired yet
@@ -53,8 +60,14 @@ public class AuctionController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/currentauctions")
-    public Iterable<Item> getCurrentAuctionsItems() {
-        return itemService.getAllCurrentItemsNotExpiredTime();
+    public ResponseEntity getCurrentAuctionsItems() {
+        List<Item> items = StreamSupport.stream(itemService.getAllCurrentItemsNotExpiredTime().spliterator(), false)
+                .collect(Collectors.toList());
+        if (items.isEmpty()) {
+            return new ResponseEntity("No items found", HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(items, HttpStatus.OK);
+        }
     }
 
     // Get all items which haven't expired yet by category
@@ -64,8 +77,14 @@ public class AuctionController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/currentauctions/category/{category}")
-    public Iterable<Item> getCurrentAuctionsItemsByCategory(@PathVariable String category) {
-        return itemService.getCurrentItemsNotExpiredTimeByCategory(category);
+    public ResponseEntity getCurrentAuctionsItemsByCategory(@PathVariable String category) {
+        List<Item> items = StreamSupport.stream(itemService.getCurrentItemsNotExpiredTimeByCategory(category).spliterator(), false)
+                .collect(Collectors.toList());
+        if (items.isEmpty()) {
+            return new ResponseEntity("No items found", HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(items, HttpStatus.OK);
+        }
     }
 
     // Get all items which has expired
@@ -75,8 +94,14 @@ public class AuctionController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/expiredauctions")
-    public Iterable<Item> getExpiredAuctionsItems() {
-        return itemService.getAllCurrentItemsExpiredTime();
+    public ResponseEntity getExpiredAuctionsItems() {
+        List<Item> items = StreamSupport.stream(itemService.getAllCurrentItemsExpiredTime().spliterator(), false)
+                .collect(Collectors.toList());
+        if (items.isEmpty()) {
+            return new ResponseEntity("No items found", HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(items, HttpStatus.OK);
+        }
     }
 
     // Get all items which has expired by category
@@ -86,8 +111,14 @@ public class AuctionController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/expiredauctions/category/{category}")
-    public Iterable<Item> getExpiredAuctionsItemsByCategory(@PathVariable String category) {
-        return itemService.getCurrentItemsExpiredTimeByCategory(category);
+    public ResponseEntity getExpiredAuctionsItemsByCategory(@PathVariable String category) {
+        List<Item> items = StreamSupport.stream(itemService.getCurrentItemsExpiredTimeByCategory(category).spliterator(), false)
+                .collect(Collectors.toList());
+        if (items.isEmpty()) {
+            return new ResponseEntity("No items found", HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(items, HttpStatus.OK);
+        }
     }
 
     // Get the latest latest (by bid time) bid for a specific item (by item id)
@@ -118,7 +149,6 @@ public class AuctionController {
         } else {
             return new ResponseEntity("No such item", HttpStatus.NOT_FOUND);
         }
-
     }
 
     // Register bid
