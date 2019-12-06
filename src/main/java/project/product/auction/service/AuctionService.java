@@ -79,8 +79,18 @@ public class AuctionService {
     public AuctionDto getAuction(long itemId) {
         Optional<Item> item = itemRepo.findById(itemId);
         Optional<Bid> bid = bidRepo.findFirstByItemIdOrderByBidCountDesc(itemId);
-        if (item.isEmpty() || bid.isEmpty()) {
+        if (item.isEmpty()) {
             return null;
+        } else if (bid.isEmpty()){
+            return AuctionDto.builder()
+                    .name(item.get().getItemName())
+                    .desc(item.get().getDescription())
+                    .expTime(item.get().getExpTime())
+                    .category(item.get().getCategory())
+                    .imageUrl(item.get().getImageUrl())
+                    .bid(item.get().getStartPrice())
+                    .bidCount(0)
+                    .build();
         } else {
             return AuctionDto.builder()
                     .name(item.get().getItemName())
@@ -112,7 +122,9 @@ public class AuctionService {
     public Bid registerBid(BidDto bidDto, LocalDateTime bidTime) {
         Optional<Bid> lastBid = bidRepo.findFirstByItemIdOrderByBidCountDesc(bidDto.getItemId());
         if (lastBid.isEmpty()) {
-            return null;
+            Bid newBid = new Bid(bidDto.getItemId(), bidDto.getCustomerID(), bidDto.getBid(), 1,bidTime);
+            bidRepo.save(newBid);
+            return newBid;
         }
         int lastBidCount = lastBid.get().getBidCount() + 1;
 
