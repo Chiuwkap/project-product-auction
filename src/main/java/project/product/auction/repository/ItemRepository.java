@@ -14,6 +14,4 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Iterable<Item> findByExpTimeGreaterThanEqual(LocalDateTime expirationTime);
     Iterable<Item> findByExpTimeGreaterThanEqualAndCategory(LocalDateTime expirationTime, String category);
 
-//    Optional<Item> deleteById(long id);
-
 }

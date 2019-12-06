@@ -97,7 +97,6 @@ public class AuctionService {
         } else {
             return null;
         }
-
     }
 
     //TODO: ItemId in Item @ManyToOne Bid - Low prio?

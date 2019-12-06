@@ -27,7 +27,7 @@ public class AuctionController {
     private static final Logger LOG = LogManager.getLogger(AuctionController.class);
 
     @Autowired
-    private AuctionService itemService;
+    private AuctionService auctionsService;
 
     // Get all the items from the database. Not really necessary
     @ApiOperation(value = "Get all items", response = List.class)
@@ -37,7 +37,7 @@ public class AuctionController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/items")
     public Iterable<Item> getItems() {
-        return itemService.getAllItems();
+        return auctionsService.getAllItems();
     }
 
     // Get a single customer by user id
@@ -48,7 +48,7 @@ public class AuctionController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/profile/{userId}")
     public ResponseEntity showProfile(@PathVariable long userId) {
-        Optional<Customer> customer = itemService.getProfile(userId);
+        Optional<Customer> customer = auctionsService.getProfile(userId);
         if (customer.isEmpty()) {
             return new ResponseEntity("Customer not found", HttpStatus.NOT_FOUND);
         } else {
@@ -64,7 +64,7 @@ public class AuctionController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/currentauctions")
     public ResponseEntity getCurrentAuctionsItems() {
-        List<Item> items = StreamSupport.stream(itemService.getAllCurrentItemsNotExpiredTime().spliterator(), false)
+        List<Item> items = StreamSupport.stream(auctionsService.getAllCurrentItemsNotExpiredTime().spliterator(), false)
                 .collect(Collectors.toList());
         if (items.isEmpty()) {
             return new ResponseEntity("No items found", HttpStatus.NOT_FOUND);
@@ -81,7 +81,7 @@ public class AuctionController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/currentauctions/category/{category}")
     public ResponseEntity getCurrentAuctionsItemsByCategory(@PathVariable String category) {
-        List<Item> items = StreamSupport.stream(itemService.getCurrentItemsNotExpiredTimeByCategory(category).spliterator(), false)
+        List<Item> items = StreamSupport.stream(auctionsService.getCurrentItemsNotExpiredTimeByCategory(category).spliterator(), false)
                 .collect(Collectors.toList());
         if (items.isEmpty()) {
             return new ResponseEntity("No items found", HttpStatus.NOT_FOUND);
@@ -98,7 +98,7 @@ public class AuctionController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/expiredauctions")
     public ResponseEntity getExpiredAuctionsItems() {
-        List<Item> items = StreamSupport.stream(itemService.getAllCurrentItemsExpiredTime().spliterator(), false)
+        List<Item> items = StreamSupport.stream(auctionsService.getAllCurrentItemsExpiredTime().spliterator(), false)
                 .collect(Collectors.toList());
         if (items.isEmpty()) {
             return new ResponseEntity("No items found", HttpStatus.NOT_FOUND);
@@ -115,7 +115,7 @@ public class AuctionController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/expiredauctions/category/{category}")
     public ResponseEntity getExpiredAuctionsItemsByCategory(@PathVariable String category) {
-        List<Item> items = StreamSupport.stream(itemService.getCurrentItemsExpiredTimeByCategory(category).spliterator(), false)
+        List<Item> items = StreamSupport.stream(auctionsService.getCurrentItemsExpiredTimeByCategory(category).spliterator(), false)
                 .collect(Collectors.toList());
         if (items.isEmpty()) {
             return new ResponseEntity("No items found", HttpStatus.NOT_FOUND);
@@ -132,7 +132,7 @@ public class AuctionController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/auctions/{itemId}")
     public ResponseEntity getAuction(@PathVariable long itemId) {
-        Optional<Bid> bid = itemService.getAuction(itemId);
+        Optional<Bid> bid = auctionsService.getAuction(itemId);
         if (bid.isEmpty()) {
             return new ResponseEntity("No bid with such item id", HttpStatus.NOT_FOUND);
         } else {
@@ -146,12 +146,12 @@ public class AuctionController {
             @ApiResponse(code = 404, message = "No such item")})
     @DeleteMapping("/items/{itemId}")
     public ResponseEntity removeItemFromAuction(@PathVariable long itemId) {
-        Item deletedItem = itemService.removeItem(itemId);
+        Item deletedItem = auctionsService.removeItem(itemId);
         if (deletedItem != null) {
             LOG.info("LOG INFO: Item successfully deleted");
             return new ResponseEntity("Deletion successful", HttpStatus.ACCEPTED);
         } else {
-            LOG.info("LOG INFO: No item to remove");
+            LOG.info("LOG INFO: No such item to remove");
             return new ResponseEntity("No such item", HttpStatus.NOT_FOUND);
         }
     }
@@ -162,12 +162,18 @@ public class AuctionController {
             @ApiResponse(code = 406, message = "Bid not accepted")})
     @PostMapping("/bid/register")
     public ResponseEntity registerBid(@RequestBody BidDto bidDto) {
-        Bid newBid = itemService.registerBid(bidDto);
+        Bid newBid = auctionsService.registerBid(bidDto);
         if (newBid != null) {
             return new ResponseEntity("Bid accepted", HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity("Bid not accepted", HttpStatus.NOT_ACCEPTABLE);
         }
+    }
+
+    @PostMapping("/itemregistry")
+    public ResponseEntity registerAnItem(@RequestBody Item itemId) {
+       Item addItem = auctionsService.registerItem(itemId);
+       return new ResponseEntity("Item added", HttpStatus.OK);
     }
 
 }
