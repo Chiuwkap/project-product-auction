@@ -100,21 +100,31 @@ public class AuctionController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/auctions/{itemId}")
-    public Optional<Bid> getAuction(@PathVariable long itemId) {
-        return itemService.getAuction(itemId);
+    public ResponseEntity getAuction(@PathVariable long itemId) {
+        Optional<Bid> bid = itemService.getAuction(itemId);
+        if (bid.isEmpty()) {
+            return new ResponseEntity("No bid with such item id", HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity(bid, HttpStatus.OK);
+        }
     }
 
     // Delete item with itemId
     @ApiOperation(value = "Delete an item with ItemId", response = List.class)
+<<<<<<< HEAD
     @ApiResponses(value = {@ApiResponse(code = 202, message = "Deletion was successful"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
+=======
+    @ApiResponses(value = { @ApiResponse(code = 202, message = "Deletion was successful"),
+                            @ApiResponse(code = 404, message = "No such item")})
+>>>>>>> 783b4bfabe8763d1eae4ade8f2b24fd98a6ddbd2
     @DeleteMapping("/items/{itemId}")
     public ResponseEntity removeItemFromAuction(@PathVariable long itemId) {
         Item deletedItem = itemService.removeItem(itemId);
         if (deletedItem != null) {
-            return new ResponseEntity(HttpStatus.ACCEPTED);
+            return new ResponseEntity("Deletion successful", HttpStatus.ACCEPTED);
         } else {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity("No such item", HttpStatus.NOT_FOUND);
         }
 
     }
@@ -127,9 +137,9 @@ public class AuctionController {
     public ResponseEntity registerBid(@RequestBody BidDto bidDto) {
         Bid newBid = itemService.registerBid(bidDto);
         if (newBid != null) {
-            return new ResponseEntity(HttpStatus.ACCEPTED);
+            return new ResponseEntity("Bid accepted", HttpStatus.ACCEPTED);
         } else {
-            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity("Bid not accepted", HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
