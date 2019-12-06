@@ -163,11 +163,9 @@ public class AuctionController {
             @ApiResponse(code = 406, message = "Bid not accepted")})
     @PostMapping("/bid/register")
     public ResponseEntity registerBid(@RequestBody BidDto bidDto) {
-<<<<<<< HEAD
-        Bid newBid = auctionsService.registerBid(bidDto);
-=======
-        Bid newBid = itemService.registerBid(bidDto, LocalDateTime.now());
->>>>>>> d2b2a953436a56e25788e1f16fc0dcf9ac035f06
+
+        Bid newBid = auctionsService.registerBid(bidDto, LocalDateTime.now());
+
         if (newBid != null) {
             return new ResponseEntity("Bid accepted", HttpStatus.ACCEPTED);
         } else {
