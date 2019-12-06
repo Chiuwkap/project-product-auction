@@ -71,16 +71,20 @@ public class AuctionService {
     }
 
     public Item removeItem(long itemId) {
-        if (itemRepo.findById(itemId).isEmpty()) {
+        Optional<Item> deletedItem = itemRepo.findById(itemId);
+        if (deletedItem.isEmpty()) {
             return null;
         } else {
             itemRepo.deleteById(itemId);
-            return itemRepo.findById(itemId).get();
+            return deletedItem.get();
         }
     }
 
     public Bid registerBid(BidDto bidDto) {
         Optional<Bid> lastBid = bidRepo.findFirstByItemIdOrderByBidCountDesc(bidDto.getItemId());
+        if (lastBid.isEmpty()) {
+            return null;
+        }
         int lastBidCount = lastBid.get().getBidCount() + 1;
 
         if (bidDto.getBid().compareTo(lastBid.get().getBid()) == 1) {
