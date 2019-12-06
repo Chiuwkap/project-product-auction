@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import project.product.auction.controller.AuctionController;
+import project.product.auction.dto.AuctionDto;
 import project.product.auction.dto.BidDto;
 import project.product.auction.model.Bid;
 import project.product.auction.model.Customer;
@@ -69,11 +70,32 @@ public class AuctionService {
         return itemRepo.findByExpTimeGreaterThanEqualAndCategory(LocalDateTime.now(), category);
     }
 
+    // Get customer's profile
     public Optional<Customer> getProfile(long id){
         return customerRepository.findById(id);
     }
 
-    public Optional<Bid> getAuction(long itemId) {
+    // Get all possible data for and item. Usable when entering a item's page
+    public AuctionDto getAuction(long itemId) {
+        Optional<Item> item = itemRepo.findById(itemId);
+        Optional<Bid> bid = bidRepo.findFirstByItemIdOrderByBidCountDesc(itemId);
+        if (item.isEmpty() || bid.isEmpty()) {
+            return null;
+        } else {
+            return AuctionDto.builder()
+                    .name(item.get().getItemName())
+                    .desc(item.get().getDescription())
+                    .expTime(item.get().getExpTime())
+                    .category(item.get().getCategory())
+                    .imageUrl(item.get().getImageUrl())
+                    .bid(bid.get().getBid())
+                    .bidCount(bid.get().getBidCount())
+                    .bidTime(bid.get().getBidTime())
+                    .build();
+        }
+    }
+
+    public Optional<Bid> getHighestBid(long itemId) {
         return bidRepo.findFirstByItemIdOrderByBidTimeDesc(itemId);
     }
 

@@ -2,6 +2,7 @@ package project.product.auction.dto;
 
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -19,8 +20,7 @@ public class AuctionDto {
     private String imageUrl;
 
     // From Bid
-    private long itemId;
-    private int bid;
+    private BigDecimal bid;
     private int bidCount;
     private LocalDateTime bidTime;
 }

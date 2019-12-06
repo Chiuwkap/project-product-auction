@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.product.auction.dto.AuctionDto;
 import project.product.auction.dto.BidDto;
 import project.product.auction.model.Bid;
 import project.product.auction.model.Customer;
@@ -133,11 +134,11 @@ public class AuctionController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/auctions/{itemId}")
     public ResponseEntity getAuction(@PathVariable long itemId) {
-        Optional<Bid> bid = auctionsService.getAuction(itemId);
-        if (bid.isEmpty()) {
-            return new ResponseEntity("No bid with such item id", HttpStatus.NOT_FOUND);
+        AuctionDto auctionDto = auctionsService.getAuction(itemId);
+        if (auctionDto == null) {
+            return new ResponseEntity("No auction with such item id", HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity(bid, HttpStatus.OK);
+            return new ResponseEntity(auctionDto, HttpStatus.OK);
         }
     }
 
