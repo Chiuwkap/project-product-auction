@@ -168,8 +168,11 @@ public class AuctionController {
         Bid newBid = auctionsService.registerBid(bidDto, LocalDateTime.now());
 
         if (newBid != null) {
+            LOG.info("LOG INFO: Highest bid is: " + newBid.getBid() + " on item " + bidDto);
             return new ResponseEntity("Bid accepted", HttpStatus.ACCEPTED);
+
         } else {
+            LOG.info("LOG INFO: Bid not accepted, item " + bidDto);
             return new ResponseEntity("Bid not accepted", HttpStatus.NOT_ACCEPTABLE);
         }
     }
@@ -178,6 +181,7 @@ public class AuctionController {
     @PostMapping("/item/register")
     public ResponseEntity registerItem(@RequestBody Item item) {
        auctionsService.registerItem(item);
+       LOG.info("LOG INFO: Item: " + item + " added");
        return new ResponseEntity("Item added", HttpStatus.OK);
     }
 
@@ -185,6 +189,7 @@ public class AuctionController {
     @PostMapping("/customer/register")
     public ResponseEntity registerCustomer(@RequestBody Customer customer) {
         auctionsService.registerCustomer(customer);
+        LOG.info("LOG INFO: Customer: " + customer + " added");
         return new ResponseEntity("Customer added", HttpStatus.OK);
     }
 
