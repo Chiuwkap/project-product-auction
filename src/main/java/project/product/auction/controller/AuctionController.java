@@ -53,12 +53,6 @@ public class AuctionController {
 
         return auctionsService.getProfile(userId).orElseThrow(()
                 -> new CustomerNotFoundException(userId));
-//        Optional<Customer> customer = auctionsService.getProfile(userId);
-//        if (customer.isEmpty()) {
-//            return new ResponseEntity("Customer not found", HttpStatus.NOT_FOUND);
-//        } else {
-//            return new ResponseEntity(customer.get(), HttpStatus.OK);
-//        }
     }
 
     // Get all items which haven't expired yet

@@ -45,11 +45,7 @@ public class AuctionService {
 
     // Get all expired items by category
     public Iterable<Item> getCurrentItemsExpiredTimeByCategory(String category) {
-//        if (Arrays.asList(categories).contains(category)) {
         return itemRepo.findByExpTimeLessThanEqualAndCategory(LocalDateTime.now(), category);
-//        } else {
-//            return null;
-//        }
     }
 
     // Get all not expired items
@@ -133,6 +129,4 @@ public class AuctionService {
             return null;
         }
     }
-
-    //TODO: ItemId in Item @ManyToOne Bid - Low prio?
 }
