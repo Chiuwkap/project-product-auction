@@ -18,6 +18,7 @@ public class AuctionDto {
     private LocalDateTime expTime;
     private String category;
     private String imageUrl;
+    private boolean hasExpired;
 
     // From Bid
     private BigDecimal bid;

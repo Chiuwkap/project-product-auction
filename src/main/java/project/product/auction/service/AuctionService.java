@@ -1,12 +1,7 @@
 package project.product.auction.service;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import project.product.auction.controller.AuctionController;
 import project.product.auction.dto.AuctionDto;
 import project.product.auction.dto.BidDto;
 import project.product.auction.model.Bid;
@@ -16,7 +11,6 @@ import project.product.auction.repository.BidRepository;
 import project.product.auction.repository.CustomerRepository;
 import project.product.auction.repository.ItemRepository;
 
-import java.math.BigDecimal;
 import java.util.*;
 import java.time.LocalDateTime;
 
@@ -31,8 +25,6 @@ public class AuctionService {
 
     @Autowired
     CustomerRepository customerRepository;
-
-//    String[] categories = {"möbler", "elektronik"};
 
     public Item registerItem(Item item) {
         return itemRepo.save(item);
@@ -54,7 +46,7 @@ public class AuctionService {
     // Get all expired items by category
     public Iterable<Item> getCurrentItemsExpiredTimeByCategory(String category) {
 //        if (Arrays.asList(categories).contains(category)) {
-            return itemRepo.findByExpTimeLessThanEqualAndCategory(LocalDateTime.now(), category);
+        return itemRepo.findByExpTimeLessThanEqualAndCategory(LocalDateTime.now(), category);
 //        } else {
 //            return null;
 //        }
@@ -71,7 +63,7 @@ public class AuctionService {
     }
 
     // Get customer's profile
-    public Optional<Customer> getProfile(long id){
+    public Optional<Customer> getProfile(long id) {
         return customerRepository.findById(id);
     }
 
@@ -81,27 +73,32 @@ public class AuctionService {
         Optional<Bid> bid = bidRepo.findFirstByItemIdOrderByBidCountDesc(itemId);
         if (item.isEmpty()) {
             return null;
-        } else if (bid.isEmpty()){
-            return AuctionDto.builder()
-                    .name(item.get().getItemName())
-                    .desc(item.get().getDescription())
-                    .expTime(item.get().getExpTime())
-                    .category(item.get().getCategory())
-                    .imageUrl(item.get().getImageUrl())
-                    .bid(item.get().getStartPrice())
-                    .bidCount(0)
-                    .build();
         } else {
-            return AuctionDto.builder()
-                    .name(item.get().getItemName())
-                    .desc(item.get().getDescription())
-                    .expTime(item.get().getExpTime())
-                    .category(item.get().getCategory())
-                    .imageUrl(item.get().getImageUrl())
-                    .bid(bid.get().getBid())
-                    .bidCount(bid.get().getBidCount())
-                    .bidTime(bid.get().getBidTime())
-                    .build();
+            LocalDateTime expirationTime = item.get().getExpTime();
+            if (bid.isEmpty()) {
+                return AuctionDto.builder()
+                        .name(item.get().getItemName())
+                        .desc(item.get().getDescription())
+                        .expTime(item.get().getExpTime())
+                        .category(item.get().getCategory())
+                        .imageUrl(item.get().getImageUrl())
+                        .bid(item.get().getStartPrice())
+                        .bidCount(0)
+                        .hasExpired(expirationTime.isBefore(LocalDateTime.now()))
+                        .build();
+            } else {
+                return AuctionDto.builder()
+                        .name(item.get().getItemName())
+                        .desc(item.get().getDescription())
+                        .expTime(item.get().getExpTime())
+                        .category(item.get().getCategory())
+                        .imageUrl(item.get().getImageUrl())
+                        .bid(bid.get().getBid())
+                        .bidCount(bid.get().getBidCount())
+                        .bidTime(bid.get().getBidTime())
+                        .hasExpired(expirationTime.isBefore(LocalDateTime.now()))
+                        .build();
+            }
         }
     }
 
@@ -122,7 +119,7 @@ public class AuctionService {
     public Bid registerBid(BidDto bidDto, LocalDateTime bidTime) {
         Optional<Bid> lastBid = bidRepo.findFirstByItemIdOrderByBidCountDesc(bidDto.getItemId());
         if (lastBid.isEmpty()) {
-            Bid newBid = new Bid(bidDto.getItemId(), bidDto.getCustomerID(), bidDto.getBid(), 1,bidTime);
+            Bid newBid = new Bid(bidDto.getItemId(), bidDto.getCustomerID(), bidDto.getBid(), 1, bidTime);
             bidRepo.save(newBid);
             return newBid;
         }
