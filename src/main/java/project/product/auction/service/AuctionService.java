@@ -11,6 +11,7 @@ import project.product.auction.repository.BidRepository;
 import project.product.auction.repository.CustomerRepository;
 import project.product.auction.repository.ItemRepository;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.time.LocalDateTime;
 
@@ -98,10 +99,12 @@ public class AuctionService {
         }
     }
 
+    // Get a highest bid for an auction
     public Optional<Bid> getHighestBid(long itemId) {
         return bidRepo.findFirstByItemIdOrderByBidTimeDesc(itemId);
     }
 
+    // Delete item
     public Item removeItem(long itemId) {
         Optional<Item> deletedItem = itemRepo.findById(itemId);
         if (deletedItem.isEmpty()) {
@@ -112,12 +115,18 @@ public class AuctionService {
         }
     }
 
+    // Register a bid on an auction
     public Bid registerBid(BidDto bidDto, LocalDateTime bidTime) {
         Optional<Bid> lastBid = bidRepo.findFirstByItemIdOrderByBidCountDesc(bidDto.getItemId());
         if (lastBid.isEmpty()) {
-            Bid newBid = new Bid(bidDto.getItemId(), bidDto.getCustomerID(), bidDto.getBid(), 1, bidTime);
-            bidRepo.save(newBid);
-            return newBid;
+            BigDecimal startPrice = itemRepo.findById(bidDto.getItemId()).get().getStartPrice();
+            if (bidDto.getBid().compareTo(startPrice) == 1) {
+                Bid newBid = new Bid(bidDto.getItemId(), bidDto.getCustomerID(), bidDto.getBid(), 1, bidTime);
+                bidRepo.save(newBid);
+                return newBid;
+            } else {
+                return null;
+            }
         }
         int lastBidCount = lastBid.get().getBidCount() + 1;
 
