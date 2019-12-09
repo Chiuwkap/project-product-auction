@@ -3,14 +3,15 @@ package project.product.auction.controller;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.product.auction.dto.AuctionDto;
 import project.product.auction.dto.BidDto;
+import project.product.auction.exception.CustomerNotFoundException;
 import project.product.auction.model.Bid;
 import project.product.auction.model.Customer;
 import project.product.auction.model.Item;
@@ -18,7 +19,6 @@ import project.product.auction.service.AuctionService;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -26,7 +26,7 @@ import java.util.stream.StreamSupport;
 @RequestMapping("/v1")
 public class AuctionController {
 
-    private static final Logger LOG = LogManager.getLogger(AuctionController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AuctionController.class);
 
     @Autowired
     private AuctionService auctionsService;
@@ -49,13 +49,16 @@ public class AuctionController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
     @GetMapping("/profile/{userId}")
-    public ResponseEntity showProfile(@PathVariable long userId) {
-        Optional<Customer> customer = auctionsService.getProfile(userId);
-        if (customer.isEmpty()) {
-            return new ResponseEntity("Customer not found", HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity(customer.get(), HttpStatus.OK);
-        }
+    public Customer showProfile(@PathVariable long userId) {
+
+        return auctionsService.getProfile(userId).orElseThrow(()
+                -> new CustomerNotFoundException(userId));
+//        Optional<Customer> customer = auctionsService.getProfile(userId);
+//        if (customer.isEmpty()) {
+//            return new ResponseEntity("Customer not found", HttpStatus.NOT_FOUND);
+//        } else {
+//            return new ResponseEntity(customer.get(), HttpStatus.OK);
+//        }
     }
 
     // Get all items which haven't expired yet
