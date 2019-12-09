@@ -11,11 +11,13 @@ import java.io.IOException;
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    // A runtime error handler
-    // If we delete this class, we will get 500 on Runtime
-    // else we get response error 404
     @ExceptionHandler(CustomerNotFoundException.class)
-    public void springHandleNotFound(HttpServletResponse response) throws IOException {
+    public void customerHandleNotFound(HttpServletResponse response) throws IOException {
+        response.sendError(HttpStatus.NOT_FOUND.value());
+    }
+
+    @ExceptionHandler(NoItemToDeleteException.class)
+    public void noItemHandleNotFound(HttpServletResponse response) throws IOException {
         response.sendError(HttpStatus.NOT_FOUND.value());
     }
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import project.product.auction.dto.AuctionDto;
 import project.product.auction.dto.BidDto;
 import project.product.auction.exception.CustomerNotFoundException;
+import project.product.auction.exception.NoItemToDeleteException;
 import project.product.auction.model.Bid;
 import project.product.auction.model.Customer;
 import project.product.auction.model.Item;
@@ -145,14 +146,16 @@ public class AuctionController {
             @ApiResponse(code = 404, message = "No such item")})
     @DeleteMapping("/items/{itemId}")
     public ResponseEntity removeItemFromAuction(@PathVariable long itemId) {
+
         Item deletedItem = auctionsService.removeItem(itemId);
         if (deletedItem != null) {
             LOG.info("LOG INFO: Item successfully deleted, item id: " + itemId);
-            return new ResponseEntity("Deletion successful", HttpStatus.ACCEPTED);
-        } else {
+            return new ResponseEntity("Deletion Success", HttpStatus.OK);
+        } else if(deletedItem == null){
             LOG.info("LOG INFO: No such item to remove");
-            return new ResponseEntity("No such item", HttpStatus.NOT_FOUND);
+            throw new NoItemToDeleteException(itemId);
         }
+        return null;
     }
 
     // Register bid
@@ -189,5 +192,4 @@ public class AuctionController {
         LOG.info("LOG INFO: Customer: " + customer + " added");
         return new ResponseEntity("Customer added", HttpStatus.OK);
     }
-
 }
