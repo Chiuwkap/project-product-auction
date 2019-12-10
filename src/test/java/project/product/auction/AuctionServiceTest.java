@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import project.product.auction.dto.BidDto;
 import project.product.auction.model.Bid;
+import project.product.auction.model.Customer;
 import project.product.auction.model.Item;
 import project.product.auction.repository.BidRepository;
 import project.product.auction.repository.CustomerRepository;
@@ -46,6 +47,9 @@ public class AuctionServiceTest {
     private Item item2;
     private Item item3;
 
+    private Customer customer1;
+    private Customer customer2;
+
     @Before
     public void setUp() {
 
@@ -53,7 +57,10 @@ public class AuctionServiceTest {
         item3 = new Item(3,"kofta", "hemmastickad", BigDecimal.valueOf(200.00), LocalDateTime.parse("2019-12-13T15:50:00"), "kläder", "http://example.com/kofta.png", 15);
         Item[] items = {item2, item3};
         listOfItems = Arrays.asList(items);
+
+        customer1 = new Customer(2,"ECM","Eric","Cartman","990909-0909","Little Street","99999","South Park","0909-99999999","Cartman@southpark.com");
     }
+
 
     @Test
     public void registerBidAccepted_test() {
@@ -98,5 +105,20 @@ public class AuctionServiceTest {
 
         // Assert that a bid has not been created
         assertNull(actual);
+    }
+
+    @Test
+    public void registerAnItem_test(){
+        when(itemRepo.save(item2)).thenReturn(item2);
+        Item item = auctionService.registerItem(item2);
+        assertNotNull(item);
+    }
+
+    @Test
+    public void registerACustomer_test(){
+
+        when(customerRepository.save(customer1)).thenReturn(customer1);
+        Customer customer = auctionService.registerCustomer(customer1);
+        assertNotNull(customer);
     }
 }
