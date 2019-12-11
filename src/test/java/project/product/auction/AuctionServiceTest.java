@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -153,5 +153,18 @@ public class AuctionServiceTest {
         AuctionDto expected = auctionService.getAuction(1);
 
         assertNotNull(expected);
+    }
+
+    @Test
+    public void removeItem_test() {
+        long itemId = 1;
+        Optional item = Optional.of(item1);
+
+        when(itemRepo.findById(itemId)).thenReturn(item);
+
+        Item deletedItem = auctionService.removeItem(itemId);
+
+        assertNotNull(deletedItem);
+        verify(itemRepo, times(1)).deleteById(itemId);
     }
 }
