@@ -128,10 +128,24 @@ public class AuctionServiceTest {
     }
 
     @Test
-    public void getAuction_test() {
+    public void getAuctionWithBid_test() {
         long itemId = 1;
         Optional item = Optional.of(item1);
         Optional bid = Optional.of(bid1);
+
+        when(itemRepo.findById(itemId)).thenReturn(item);
+        when(bidRepo.findFirstByItemIdOrderByBidCountDesc(itemId)).thenReturn(bid);
+
+        AuctionDto expected = auctionService.getAuction(1);
+
+        assertNotNull(expected);
+    }
+
+    @Test
+    public void getAuctionWithoutBid_test() {
+        long itemId = 1;
+        Optional item = Optional.of(item1);
+        Optional bid = Optional.empty();
 
         when(itemRepo.findById(itemId)).thenReturn(item);
         when(bidRepo.findFirstByItemIdOrderByBidCountDesc(itemId)).thenReturn(bid);
