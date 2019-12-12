@@ -151,11 +151,10 @@ public class AuctionController {
         if (deletedItem != null) {
             LOG.info("LOG INFO: Item successfully deleted, item id: " + itemId);
             return new ResponseEntity("Deletion Success", HttpStatus.OK);
-        } else if(deletedItem == null){
+        } else {
             LOG.info("LOG INFO: No such item to remove");
             throw new NoItemToDeleteException(itemId);
         }
-        return null;
     }
 
     // Register bid
