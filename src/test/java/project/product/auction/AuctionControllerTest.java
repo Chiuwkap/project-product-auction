@@ -10,6 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import project.product.auction.dto.BidDto;
 import project.product.auction.model.Bid;
 import project.product.auction.model.Customer;
@@ -97,4 +98,26 @@ public class AuctionControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    public void registerBid_test() throws Exception {
+        when(auctionsService.registerBid(bidDto, LocalDateTime.now())).thenReturn(null);
+
+        this.mockMvc
+                .perform(
+                        post("/v1/bid/register")
+                                .content(asJsonString(bidDto))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .characterEncoding("utf-8"))
+                .andDo(print())
+                .andExpect(status().isNotAcceptable());
+    }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

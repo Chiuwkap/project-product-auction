@@ -178,17 +178,15 @@ public class AuctionController {
 
     // Register item
     @PostMapping("/item/register")
-    public ResponseEntity registerItem(@RequestBody Item item) {
-       auctionsService.registerItem(item);
+    public Item registerItem(@RequestBody Item item) {
        LOG.info("LOG INFO: Item: " + item + " added");
-       return new ResponseEntity("Item added", HttpStatus.OK);
+       return auctionsService.registerItem(item);
     }
 
     // Register customer
     @PostMapping("/customer/register")
-    public ResponseEntity registerCustomer(@RequestBody Customer customer) {
-        auctionsService.registerCustomer(customer);
+    public Customer registerCustomer(@RequestBody Customer customer) {
         LOG.info("LOG INFO: Customer: " + customer + " added");
-        return new ResponseEntity("Customer added", HttpStatus.OK);
+        return auctionsService.registerCustomer(customer);
     }
 }
